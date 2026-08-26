@@ -79,6 +79,7 @@ class Main
           - VSLICE
           - PSYCH
           - CNE
+          - WEEKBOX
           - Requires filepath to engine installation.
 - install
      - installs all mod ids after this argument
