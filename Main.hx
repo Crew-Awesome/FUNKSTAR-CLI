@@ -1,5 +1,8 @@
 package;
 
+import haxe.io.Path;
+import sys.FileSystem;
+
 class Main
 {
   static var mods:Map<String, Mod> = [
@@ -12,6 +15,8 @@ class Main
     'pointlesspins' => new Mod('Pointless Pins', ['betteralphabet']),
     'betteralphabet' => new Mod('Better Alphabet')
   ];
+
+  static final ENGINES:Array<String> = ["VSLICE", "PSYCH", "CNE", "WEEKBOX"];
 
   static function main()
   {
@@ -41,9 +46,29 @@ class Main
 
       if (cmd == 'setup')
       {
-        if (engine == '') engine = arg;
+        if (engine == '')
+        {
+          if (!ENGINES.contains(arg))
+          {
+            Sys.println("Invalid engine!");
+            Sys.exit(1);
+          }
+
+          engine = arg;
+        }
         else
-          dir = arg;
+        {
+          var cleansedDir = Path.normalize(arg);
+          if (cleansedDir == null || !FileSystem.exists(cleansedDir))
+          {
+            Sys.println("Invalid directory!");
+            Sys.exit(1);
+          }
+
+          //TODO: Do a check here to make sure that there is actually an engine installed at the directory provided.
+
+          dir = cleansedDir;
+        }
       }
     }
 
@@ -80,7 +105,7 @@ class Main
           - PSYCH
           - CNE
           - WEEKBOX
-          - Requires filepath to engine installation.
+          - Requires directory of engine installation.
 - install
      - installs all mod ids after this argument
 - remove
