@@ -65,9 +65,7 @@ class Main
             Sys.exit(1);
           }
 
-          //TODO: Do a check here to make sure that there is actually an engine installed at the directory provided.
-
-          dir = cleansedDir;
+          setupEngine(cleansedDir, engine);
         }
       }
     }
@@ -103,7 +101,7 @@ class Main
      - Arguments:
           - VSLICE
           - PSYCH
-          - CNE
+          - CODENAME | CNE
           - WEEKBOX
           - Requires directory of engine installation.
 - install
@@ -117,6 +115,39 @@ class Main
       case 'setup':
         Sys.println('Setting up for ${engine} using directory ${dir}');
     }
+  }
+
+  static function setupEngine(path:String, engine:String)
+  {
+    var files:Array<String> = FileSystem.readDirectory(path);
+
+    var targetFile:String = "";
+
+    switch (engine)
+    {
+      case "VSLICE":
+        targetFile = "Funkin.exe";
+      case "PSYCH":
+        targetFile = "PsychEngine.exe";
+      case "CODENAME" | "CNE":
+        targetFile = "CodenameEngine.exe";
+      case "WEEKBOX":
+        Sys.println("WeekBox not supported yet!");
+        Sys.exit(0);
+      default:
+        Sys.println("If you're seeing this, we fucked up fr fr");
+        Sys.exit(1);
+    }
+
+    if (!files.contains(targetFile))
+    {
+      Sys.println('Could not find a $engine installation at this directory.');
+      Sys.exit(1);
+    }
+
+    // TODO: install the dependencies n shit...
+
+    Sys.println('Succesfully setup funkSTAR for $engine !');
   }
 }
 
