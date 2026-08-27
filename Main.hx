@@ -16,8 +16,6 @@ class Main
     'betteralphabet' => new Mod('Better Alphabet')
   ];
 
-  static final ENGINES:Array<String> = ["VSLICE", "PSYCH", "CNE", "WEEKBOX"];
-
   static function main()
   {
     var args = Sys.args();
@@ -26,7 +24,6 @@ class Main
     var noDependencies = false;
     var verbose = false;
     var modsToInstall = [];
-    var engine = '';
 
     for (arg in args)
     {
@@ -43,22 +40,6 @@ class Main
       }
 
       if (cmd == 'install' || cmd == 'remove') modsToInstall.push(arg);
-
-      if (cmd == 'setup')
-      {
-        if (engine == '')
-        {
-          if (!ENGINES.contains(arg))
-          {
-            Sys.println("Invalid engine!");
-            Sys.exit(1);
-          }
-
-          engine = arg;
-
-          setupEngine(dir, engine);
-        }
-      }
     }
 
     var finalMods = [];
@@ -88,12 +69,7 @@ class Main
         }
       case 'help':
         Sys.println('- setup
-     - sets up funkSTAR, installs relevant mod dependencies
-     - Arguments:
-          - VSLICE
-          - PSYCH
-          - CODENAME | CNE
-          - WEEKBOX
+     - sets up funkSTAR, installs relevant mod dependencies, auto-detects engine of Cwd
 - install
      - installs all mod ids after this argument
 - remove
@@ -103,41 +79,54 @@ class Main
 - --no-dependencies
      - ignores dependencies when installing/removing mods');
       case 'setup':
-        Sys.println('Setting up for ${engine} using directory ${dir}');
+        Sys.println('Setting up funkSTAR...');
+        setupEngine(dir);
     }
   }
 
-  static function setupEngine(path:String, engine:String)
+  static function setupEngine(path:String)
   {
     var files:Array<String> = FileSystem.readDirectory(path);
 
+    var engines:Array<String> = ["Funkin.exe", "PsychEngine.exe", "CodenameEngine.exe"];
+
     var targetFile:String = "";
 
-    switch (engine)
+    var engineName:String = "";
+
+    for (engine in engines)
     {
-      case "VSLICE":
-        targetFile = "Funkin.exe";
-      case "PSYCH":
-        targetFile = "PsychEngine.exe";
-      case "CODENAME" | "CNE":
-        targetFile = "CodenameEngine.exe";
-      case "WEEKBOX":
-        Sys.println("WeekBox not supported yet!");
-        Sys.exit(0);
+      if (files.contains(engine))
+      {
+        targetFile = engine;
+      }
+    }
+
+    if (targetFile == "")
+    {
+      Sys.println("No Funkin' engine found at current working directory.");
+      Sys.exit(0);
+    }
+
+    switch (targetFile)
+    {
+      case "Funkin.exe":
+        // TODO: install vslice dependency
+        engineName = "VSLICE";
+      case "PsychEngine.exe":
+        // TODO: install psych dependency
+        engineName = "PSYCH";
+      case "CodenameEngine.exe":
+        // TODO: ok you get it now
+        engineName = "CODENAME";
       default:
         Sys.println("If you're seeing this, we fucked up fr fr");
         Sys.exit(1);
     }
 
-    if (!files.contains(targetFile))
-    {
-      Sys.println('Could not find a $engine installation at this directory.');
-      Sys.exit(1);
-    }
-
     // TODO: install the dependencies n shit...
 
-    Sys.println('Succesfully setup funkSTAR for $engine !');
+    Sys.println('Succesfully setup funkSTAR for $engineName!');
   }
 }
 
