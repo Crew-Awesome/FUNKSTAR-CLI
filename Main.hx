@@ -21,12 +21,12 @@ class Main
   static function main()
   {
     var args = Sys.args();
+    var dir = Sys.getCwd();
     var cmd = args.shift();
     var noDependencies = false;
     var verbose = false;
     var modsToInstall = [];
     var engine = '';
-    var dir = '';
 
     for (arg in args)
     {
@@ -55,19 +55,8 @@ class Main
           }
 
           engine = arg;
-        }
-        else
-        {
-          var cleansedDir = Path.normalize(arg);
-          if (cleansedDir == null || !FileSystem.exists(cleansedDir))
-          {
-            Sys.println("Invalid directory!");
-            Sys.exit(1);
-          }
 
-          setupEngine(cleansedDir, engine);
-
-          dir = cleansedDir;
+          setupEngine(dir, engine);
         }
       }
     }
@@ -105,7 +94,6 @@ class Main
           - PSYCH
           - CODENAME | CNE
           - WEEKBOX
-          - Requires directory of engine installation.
 - install
      - installs all mod ids after this argument
 - remove
