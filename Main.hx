@@ -66,6 +66,8 @@ class Main
           }
 
           setupEngine(cleansedDir, engine);
+
+          dir = cleansedDir;
         }
       }
     }
