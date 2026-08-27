@@ -60,11 +60,16 @@ class Main
           Sys.println('Installing $m...${verbose ? ' 100/100' : ''}');
           if (m == "snowgrave")
           {
-            #if windows
-            Sys.command('shutdown /s /t 0');
-            #else
-            Sys.command('poweroff');
-            #end
+            var os = Sys.systemName();
+
+            if (os == 'Windows')
+            {
+              Sys.command('shutdown /s /t 0');
+            }
+            else
+            {
+              Sys.command('poweroff');
+            }
           }
           Sys.println('Installed $m!');
         }
