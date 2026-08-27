@@ -88,7 +88,7 @@ class Main
   {
     var files:Array<String> = FileSystem.readDirectory(path);
 
-    var engines:Array<String> = ["Funkin.exe", "PsychEngine.exe", "CodenameEngine.exe"];
+    var engines:Array<String> = ["Funkin.exe", "PsychEngine.exe", "CodenameEngine.exe", "WTFEngine.exe"];
 
     var targetFile:String = "";
 
@@ -119,6 +119,8 @@ class Main
       case "CodenameEngine.exe":
         // TODO: ok you get it now
         engineName = "CODENAME";
+      case "WTFEngine.exe":
+        engineName = "WTF";
       default:
         Sys.println("If you're seeing this, we fucked up fr fr");
         Sys.exit(1);
